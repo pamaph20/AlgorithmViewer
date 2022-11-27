@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 </html lang = "en">  
-
+    
+    
     <head>
         <link rel="stylesheet" href="style.css">
         <title> Algorithm-Viewer </title>
             
     </head>
-
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="app.js"></script> 
     <body>
     <h1>
         Algorithm-Viewer
@@ -14,56 +16,9 @@
     </body>
 
     <head>
-       
-
-        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-
-        <script type="text/javascript">
-        jQuery(document).ready(function(){
-            var savedx = null;
-            var savedy = null;
-            var count = 0;
-            
-             $("#special").click(function(e){ 
-    
-        
-                var x = e.pageX - this.offsetLeft;
-                var y = e.pageY - this.offsetTop; 
-    
-                
-                
-                /* var c=document.getElementById("special"); */
-                var ctx= this.getContext("2d"); /*c.getContext("2d");*/
-    
-              
-    
-                ctx.beginPath();
-                ctx.arc(x, y, 10,0, 2*Math.PI);
-                ctx.fill();
-                if(savedx != null){
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(savedx, savedy);
-                }           
-                ctx.stroke();
-       
-                savedx = x;
-                savedy = y;
-                count += 1;
-        
-                $('#status2').html(count); 
-           }); 
-        })  
-        
-        </script>
-
-          
-       
         <body> 
             <h2 id="status2">0</h2>
-            <canvas width="1500px" height="700px" style="width: 1500px; height: 700px; border:1px ridge green;" id="special">
+            <canvas width="1500px" height="700px" style="width: 1500px; height: 700px; border:1px ridge green;" id="special"></canvas>
+        </body>  
         
-            </canvas>
-        </body>
-    
-    
 </html>
