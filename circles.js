@@ -4,8 +4,6 @@ class Circles{
         this.y = y;
         this.number = number;
         var edges = [edge];
-
-
     }
 
     edge(node1, node2, weight){
