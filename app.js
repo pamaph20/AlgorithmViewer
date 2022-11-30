@@ -20,8 +20,7 @@ const nodeDict = new Map();
 var count = 0;
 
 jQuery(document).ready(function(){
-    var savedx = null;
-    var savedy = null;
+    
      $("#special").click(function(e){ 
         count += 1;
 
@@ -32,21 +31,11 @@ jQuery(document).ready(function(){
         const newNode = new node(x, y, count);
         nodeDict.set(count, newNode);
         
-        
        
         var ctx= this.getContext("2d"); 
         ctx.beginPath();
         ctx.arc(x, y, 10,0, 2*Math.PI);
         ctx.fill();
-        if(count > 1){
-            ctx.moveTo(x, y);
-            ctx.lineTo(savedx, savedy);
-        }           
-        ctx.stroke();
-
-        savedx = x;
-        savedy = y;
-        
 
         $('#status2').html(count);
    }); 
