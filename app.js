@@ -15,23 +15,19 @@ function node(x, y, number){
 }
 */
 
-
 const nodeDict = new Map();
 var count = 0;
 
 jQuery(document).ready(function(){
-    
      $("#special").click(function(e){ 
         count += 1;
 
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
 
-
         const newNode = new node(x, y, count);
         nodeDict.set(count, newNode);
-        
-       
+          
         var ctx= this.getContext("2d"); 
         ctx.beginPath();
         ctx.arc(x, y, 10,0, 2*Math.PI);
@@ -41,8 +37,6 @@ jQuery(document).ready(function(){
    }); 
 })  
 
-
-
 function showNodeDict(){
     let text = "";
     nodeDict.forEach (function(value, key) {
@@ -51,20 +45,12 @@ function showNodeDict(){
     document.getElementById("demp").innerHTML = text;
     }
 
-
-
-
 function newEdge(node1, node2, weight){  
     node1.edges.set(node2.number, weight);
     node2.edges.set(node1.number, weight);
     drawEdge(node1, node2);         
 }       
            
-        
-    
-
-
-
 function makeCompleteGraph(){
     for(const i of nodeDict.keys()){
         for (const j of nodeDict.keys()){
@@ -73,7 +59,6 @@ function makeCompleteGraph(){
     }
     document.getElementById("complete").innerHTML = 'worked';
     }
-
 
 
 function drawEdge(node1, node2){
@@ -85,10 +70,25 @@ function drawEdge(node1, node2){
     ctx.stroke();
 }
 
+function select_Nodes(){
+    /*
+    Select two nodes to be ran with the drawEdge Function
+    */
+}
 
+function dragNode(){
+    /*
+    Select a pre-existing node and drag it around the canvas
+    */
+}
+
+function deleteNode(){
+    /*
+    Select a pre-existing node and delete it from the canvas
+    */
+}
 
 function clearCanvas(){
-    
     nodeDict.clear();
     count = 0;
     $('#status2').html(count);
