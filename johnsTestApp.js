@@ -13,11 +13,13 @@ document.addEventListener('mousedown', setDraggable, false);
 document.addEventListener('mouseup', setDraggable, false);
 
 //make some circles
-var c1 = new Circle(50, 50, 50, "red", "black");
-var c2 = new Circle(200, 50, 50, "green", "black");
-var c3 = new Circle(350, 50, 50, "blue", "black");
-//initialise our circles
-var circles = [c1, c2, c3];
+function draw(e) {
+    var pos = getMousePos(canvas, e);
+    posx = pos.x;
+    posy = pos.y;
+    context.fillStyle = "#000000";
+    context.arc(posx, posy, 50, 0, 2 * Math.PI);
+}
 
 //main draw method
 function draw() {

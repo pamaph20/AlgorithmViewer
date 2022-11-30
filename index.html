@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 </html lang = "en">  
     
-    
+    <meta
+    http-equiv="Content-Security-Policy"
+    content="upgrade-insecure-requests" />
+    <head>
         <link rel="stylesheet" href="style.css">
         <title> Algorithm-Viewer </title>
             
     </head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="app.js"></script> 
+    <script src="circles.js"></script> 
     <body>
     <h1>
         Algorithm-Viewer
@@ -16,7 +19,7 @@
     
     
     <body2>
-        <script src ="app.js">showNodeDict()</script>
+        <script src ="circles.js">showNodeDict()</script>
            
         
 
@@ -25,8 +28,8 @@
     </body2>
 
     <body3>
-        <script src ="app.js">makeCompleteGraph()</script>
-        <script src ="app.js">clearCanvas()</script>
+        <script src ="circless.js">makeCompleteGraph()</script>
+        <script src ="circles.js">clearCanvas()</script>
            
         
 
@@ -43,8 +46,7 @@
         <body> 
             <h2 id="status2">0</h2>
             <div style = "text-align: center;">
-                <canvas width="1500px" height="700px" style="width: 1500px; height: 700px; border:1px ridge green;" id="canvas"></canvas>
-            </div>
+                <canvas width="1500px" height="700px" style="width: 1500px; height: 700px; border:1px ridge green;" id="canvas"></canvas></div>
             
         </body> 
 
