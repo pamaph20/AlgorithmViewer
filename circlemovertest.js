@@ -7,16 +7,83 @@ function node(x, y, number){
     
 }
 
-/* May be Useless
- edge(node1, node2, weight){
-    this.node1 = node1;
-    this.node2 = node2;
-    this.weight = weight;
-}
-*/
-
 const nodeDict = new Map();
 var count = 0;
+
+var c = document.getElementById("myCanvas");
+var ctx= c.getContext("2d");
+
+//add listeners
+document.addEventListener('mousemove', move, false);
+document.addEventListener('mousedown', setDraggable, false);
+document.addEventListener('mouseup', setDraggable, false);
+
+
+//key track of circle focus and focused index
+var focused = {
+    key: 0,
+    state: false
+}
+
+
+function move(e) {
+    if (!isMouseDown) {
+        return;
+    }
+    getMousePosition(e);
+    //if any circle is focused
+    if (focused.state) {
+        [focused.key].x = mousePosition.x;
+        nodeDict[focused.key].y = mousePosition.y;
+        draw();
+        return;
+    }
+    //no circle currently focused check if circle is hovered
+    for (var i = 0; i < circles.length; i++) {
+        if (intersects(nodeDict[i])) {
+            nodeDict.move(i, 0);
+            focused.state = true;
+            break;
+        }
+    }
+    draw();
+}
+
+//set mousedown state
+function setDraggable(e) {
+    var t = e.type;
+    if (t === "mousedown") {
+        isMouseDown = true;
+    } else if (t === "mouseup") {
+        isMouseDown = false;
+        releaseFocus();
+    }
+}
+
+function releaseFocus() {
+    focused.state = false;
+}
+
+
+function getMousePosition(e) {
+    var rect = c.getBoundingClientRect();
+    mousePosition = {
+        x: Math.round(e.x - rect.left),
+        y: Math.round(e.y - rect.top)
+    }
+}
+
+//detects whether the mouse cursor is between x and y relative to the radius specified
+function intersects(node) {
+    // subtract the x, y coordinates from the mouse position to get coordinates 
+    // for the hotspot location and check against the area of the radius
+    var areaX = mousePosition.x - node.x;
+    var areaY = mousePosition.y - node.y;
+    //return true if x^2 + y^2 <= radius squared.
+    return areaX * areaX + areaY * areaY <= 10 * 10;
+}
+
+
 
 jQuery(document).ready(function(){
      $("#special").click(function(e){ 
@@ -25,6 +92,8 @@ jQuery(document).ready(function(){
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
 
+
+        
 
         count += 1;
         const newNode = new node(x, y, count);
