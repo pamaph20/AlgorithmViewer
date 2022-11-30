@@ -41,8 +41,6 @@ jQuery(document).ready(function(){
         /* var c=document.getElementById("special"); */
         var ctx= this.getContext("2d"); /*c.getContext("2d");*/
 
-      
-
         ctx.beginPath();
         ctx.arc(x, y, 10,0, 2*Math.PI);
         ctx.fill();
