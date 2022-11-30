@@ -1,106 +1,136 @@
-function node(x, y, number){
-    this.x = x;
-    this.y = y;
-    this.number = number;
-    const edges = new Map();
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('2d');
+
+var nodes = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 
-/* May be Useless
- edge(node1, node2, weight){
-    this.node1 = node1;
-    this.node2 = node2;
-    this.weight = weight;
-}
-*/
+window.onresize = resize;
+resize();
 
 
-var nodeDict = new Map();
-var count = 0;
 
-
-//detects whether the mouse cursor is between x and y relative to the radius specified
-function intersects(node) {
-    // subtract the x, y coordinates from the mouse position to get coordinates 
-    // for the hotspot location and check against the area of the radius
-    var areaX = mousePosition.x - node.x;
-    var areaY = mousePosition.y - node.y;
-    //return true if x^2 + y^2 <= radius squared.
-    return areaX * areaX + areaY * areaY <= 10 * 10;
+function drawNode(node) {
+  context.beginPath();
+  context.fillStyle = node.fillStyle;
+  context.arc(node.x, node.y, node.radius, 0, Math.PI * 2, true);
+  context.strokeStyle = node.strokeStyle;
+  context.stroke();
+  context.fill();
 }
 
 
-jQuery(document).ready(function(){
-     $("#canvas").click(function(e){ 
-        var x = e.pageX - this.offsetLeft;
-        var y = e.pageY - this.offsetTop;
-        count += 1;
-        const newNode = new node(x, y, count);
-        nodeDict.set(count, newNode);
-        var ctx= this.getContext("2d"); 
-        ctx.beginPath();
-        ctx.arc(x, y, 10,0, 2*Math.PI);
-        ctx.fill();
-        $('#status2').html(count);
-   }); 
-})  
+function click(e) {
+  let node = {
+      x: e.x,
+      y: e.y,
+      radius: 10,
+      fillStyle: '#22cccc',
+      strokeStyle: '#009999'
+  };
+  nodes.push(node);
+  drawNode(node);
+}
+
+var selection = undefined;
+
+function within(x, y) {
+    return nodes.find(n => {
+        return x > (n.x - n.radius) && 
+            y > (n.y - n.radius) &&
+            x < (n.x + n.radius) &&
+            y < (n.y + n.radius);
+    });
+}
+
+function down(e) {
+  let target = within(e.x, e.y);
+  if (selection && selection.selected) {
+      selection.selected = false;
+  }
+  if (target) {
+      if (selection && selection !== target) {
+          edges.push({ from: selection, to: target });
+      }
+      selection = target;
+      selection.selected = true;
+      draw();
+  }
+}
 
 
+window.onmousemove = move;
+window.onmousedown = down;
+window.onmouseup = up;
+
+function draw() {
+  context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  for (let i = 0; i < nodes.length; i++) {
+      let node = nodes[i];
+      context.beginPath();
+      context.fillStyle = node.fillStyle;
+      context.arc(node.x, node.y, node.radius, 0, Math.PI * 2, true);
+      context.strokeStyle = node.strokeStyle;
+      context.fill();
+      context.stroke();
+  }
+}
+
+/** remove the onclick code and update move and up code */
+function move(e) {
+  if (selection && e.buttons) {
+      selection.x = e.x;
+      selection.y = e.y;
+      draw();
+  }
+}
+
+function up(e) {
+  if (!selection) {
+      let node = {
+          x: e.x,
+          y: e.y,
+          radius: 10,
+          fillStyle: '#22cccc',
+          strokeStyle: '#009999',
+          selectedFill: '#88aaaa',
+          selected: false
+      };
+      nodes.push(node);
+      draw();
+  }
+  if (selection && !selection.selected) {
+      selection = undefined;
+  }
+  draw();
+}
 
 
-function drawNodes
+var edges = [];
 
+function draw() {
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-function showNodeDict(){
-    let text = "";
-    nodeDict.forEach (function(value, key) {
-        text += key + ' = ' + value + ', ';
-        }) 
-    document.getElementById("demp").innerHTML = text;
+    for (let i = 0; i < edges.length; i++) {
+        let fromNode = edges[i].from;
+        let toNode = edges[i].to;
+        context.beginPath();
+        context.strokeStyle = fromNode.strokeStyle;
+        context.moveTo(fromNode.x, fromNode.y);
+        context.lineTo(toNode.x, toNode.y);
+        context.stroke();
     }
 
-
-
-
-function newEdge(node1, node2, weight){  
-    /*node1.edges.set(node2.number, weight);
-    node2.edges.set(node1.number, weight);*/
-    drawEdge(node1, node2);         
-}       
-           
-        
-    
-
-
-
-function makeCompleteGraph(){
-    for(const i of nodeDict.keys()){
-        for (const j of nodeDict.keys()){
-            newEdge(nodeDict.get(i), nodeDict.get(j), 5);
-        }
+    for (let i = 0; i < nodes.length; i++) {
+        let node = nodes[i];
+        context.beginPath();
+        context.fillStyle = node.selected ? node.selectedFill : node.fillStyle;
+        context.arc(node.x, node.y, node.radius, 0, Math.PI * 2, true);
+        context.strokeStyle = node.strokeStyle;
+        context.fill();
+        context.stroke();
     }
-    document.getElementById("complete").innerHTML = 'worked';
-    }
-
-
-
-function drawEdge(node1, node2){
-    var c = document.getElementById("canvas");
-    var ctx= c.getContext("2d");
-    ctx.beginPath();
-    ctx.moveTo(node1.x, node1.y);
-    ctx.lineTo(node2.x, node2.y);
-    ctx.stroke();
 }
-
-
-
-function clearCanvas(){
-    
-    nodeDict.clear();
-    count = 0;
-    $('#status2').html(count);
-    var c = document.getElementById("canvas");
-    var ctx= c.getContext("2d");
-    ctx.clearRect(0, 0, c.width, c.height)
-}
-
