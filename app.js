@@ -3,6 +3,8 @@ function node(x, y, number){
     this.y = y;
     this.number = number;
     const edges = new Map();
+    this.edges = edges;
+    
 }
 
 /* May be Useless
@@ -64,8 +66,8 @@ function showNodeDict(){
 
 
 function newEdge(node1, node2, weight){  
-    /*node1.edges.set(node2.number, weight);
-    node2.edges.set(node1.number, weight);*/
+    node1.edges.set(node2.number, weight);
+    node2.edges.set(node1.number, weight);
     drawEdge(node1, node2);         
 }       
            
