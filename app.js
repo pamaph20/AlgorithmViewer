@@ -15,36 +15,28 @@ function node(x, y, number){
 
 
 const nodeDict = new Map();
-
+var count = 0;
 
 jQuery(document).ready(function(){
     var savedx = null;
     var savedy = null;
-    var count = 0;
-    
-    
      $("#special").click(function(e){ 
         count += 1;
 
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
 
-        
-       
-        
-        const newNode = new node(x, y, count);
-        
 
+        const newNode = new node(x, y, count);
         nodeDict.set(count, newNode);
         
         
-        /* var c=document.getElementById("special"); */
-        var ctx= this.getContext("2d"); /*c.getContext("2d");*/
-
+       
+        var ctx= this.getContext("2d"); 
         ctx.beginPath();
         ctx.arc(x, y, 10,0, 2*Math.PI);
         ctx.fill();
-        if(savedx != null){
+        if(count > 1){
             ctx.moveTo(x, y);
             ctx.lineTo(savedx, savedy);
         }           
@@ -55,10 +47,6 @@ jQuery(document).ready(function(){
         
 
         $('#status2').html(count);
-        $('nodedict').html(Nodedict.values());
-
-    
-
    }); 
 })  
 
@@ -75,13 +63,10 @@ function showNodeDict(){
 
 
 
-function newEdge(node1, node2, weight){
-    
+function newEdge(node1, node2, weight){  
     /*node1.edges.set(node2.number, weight);
     node2.edges.set(node1.number, weight);*/
-
-    $('#special').drawEdge()
-            
+    drawEdge(node1, node2);         
 }       
            
         
@@ -90,40 +75,34 @@ function newEdge(node1, node2, weight){
 
 
 function makeCompleteGraph(){
-    for(const x of fruits.keys()){
-        for (const y of fruits.keys()){
-            newEdge(x, y, 5);
+    for(const i of nodeDict.keys()){
+        for (const j of nodeDict.keys()){
+            newEdge(nodeDict.get(i), nodeDict.get(j), 5);
         }
     }
-
     document.getElementById("complete").innerHTML = 'worked';
     }
 
 
-function drawEdge(){
-    var ctx= this.getContext("2d");
+
+function drawEdge(node1, node2){
+    var c = document.getElementById("special");
+    var ctx= c.getContext("2d");
     ctx.beginPath();
-    ctx.arc(400, 400, 10,0, 2*Math.PI);
-    ctx.fill();
-    
-    
-    /*ctx.moveTo(0,0);
-    ctx.lineTo(400, 400);*/
-    
+    ctx.moveTo(node1.x, node1.y);
+    ctx.lineTo(node2.x, node2.y);
     ctx.stroke();
 }
 
-/*function test()
-var $myCanvas = $('#special');
 
-// rectangle shape 
-$myCanvas.drawRect({
-  fillStyle: 'steelblue',
-  strokeStyle: 'blue',
-  strokeWidth: 4,
-  x: 190,
-  y: 50,
-  fromCenter: false,
-  width: 200,
-  height: 100
-});*/
+
+function clearCanvas(){
+    
+    nodeDict.clear();
+    count = 0;
+    $('#status2').html(count);
+    var c = document.getElementById("special");
+    var ctx= c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height)
+}
+
