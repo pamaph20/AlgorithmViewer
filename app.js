@@ -2,7 +2,7 @@ const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 
 var nodes = [];
-
+console.log(nodes)
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -106,6 +106,10 @@ function up(e) {
       selection = undefined;
   }
   draw();
+}
+
+function deleteNodes(e){
+
 }
 
 
