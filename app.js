@@ -139,6 +139,7 @@ const context = canvas.getContext('2d');
 var g = new WeightedGraph();
 var nodes = [];
 var edges = [];
+var radius = 60;
 var selection = undefined;
 window.onmousemove = move;
 window.onmousedown = down;
@@ -279,6 +280,10 @@ function draw() {
         context.arc(node.x, node.y, node.radius, 0, Math.PI * 2, true);
         context.strokeStyle = node.strokeStyle;
         context.fill();
+        var font = "bold "+ radius / 2 + "px serif";
+        context.font = font;
+        context.fillStyle = "black";
+        context.fillText(node.id, node.x, node.y, node.radius);
         context.stroke();
     }
 }
