@@ -139,6 +139,7 @@ const context = canvas.getContext('2d');
 var g = new WeightedGraph();
 var nodes = [];
 var edges = [];
+var weight = 0;
 var radius = 60;
 var selection = undefined;
 window.onmousemove = move;
@@ -152,13 +153,16 @@ window.onresize = resize;
 resize();
 
 function final(){
-  var map = g.Dijkstra("1", "3");
-  console.log(g.Dijkstra('1','3'));
+  let start = prompt("Please enter a start")
+  let end = prompt("Please enter an end")
+
+  var map = g.Dijkstra(start, end);
+  console.log(g.Dijkstra(start,end));
   map = map.toString();
   var nodelist = map.split(",");
   console.log(nodelist);
   colorEdges(nodelist);
-  document.getElementById("test").innerHTML = map.toString();
+  document.getElementById("Final Path").innerHTML = map.toString();
   
 
 }
@@ -188,7 +192,7 @@ function down(e) {
       if (selection && selection !== target) {
             if(!edgesExists(JSON.stringify(selection), JSON.stringify(target))){
                 let weight = prompt("Enter a weight");
-              
+                console.log(weight)
                 edges.push({ from: selection, to: target, weight}); 
                 g.addEdge(selection.id, target.id, weight);            
                 
@@ -254,9 +258,6 @@ function up(e) {
   draw();
 }
 
-function deleteNodes(e){
-
-}
 
 function draw() {
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
