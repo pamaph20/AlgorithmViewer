@@ -151,7 +151,14 @@ window.onresize = resize;
 resize();
 
 function final(){
-    console.log(g.Dijkstra('1','5'));
+  var map = g.Dijkstra("1", "3");
+  console.log(g.Dijkstra('1','3'));
+  map = map.toString();
+  var nodelist = map.split(",");
+  console.log(nodelist);
+  colorEdges(nodelist);
+  document.getElementById("test").innerHTML = map.toString();
+  
 
 }
 
@@ -180,7 +187,7 @@ function down(e) {
       if (selection && selection !== target) {
             if(!edgesExists(JSON.stringify(selection), JSON.stringify(target))){
                 let weight = prompt("Enter a weight");
-                console.log(weight)
+              
                 edges.push({ from: selection, to: target, weight}); 
                 g.addEdge(selection.id, target.id, weight);            
                 
@@ -274,4 +281,30 @@ function draw() {
         context.fill();
         context.stroke();
     }
+}
+
+
+// Colors the edges that are used in the shortest path
+function colorEdges(array){
+  for(let i = 0; i< array.length -1; i++){
+    redNode = parseInt(array[i]) -1;
+    nextNode = parseInt(array[i + 1]) -1;
+    context.beginPath();
+    context.strokeStyle = "#FF0000";   
+    context.moveTo(nodes[redNode].x, nodes[redNode].y);
+    context.lineTo(nodes[nextNode].x, nodes[nextNode].y);
+    context.stroke();
+  }
+}
+
+function clearPage(){
+  var emptynodes = [];
+  var emptyedges = [];
+  var newdict = {}
+  g = new WeightedGraph();
+  nodes = emptynodes;
+  edges = emptyedges;
+  dict = newdict;  
+  context.clearRect(0, 0, 1500, 700);
+  document.getElementById("test").innerHTML = "Not Run yet";
 }
