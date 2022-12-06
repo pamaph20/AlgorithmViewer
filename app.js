@@ -189,7 +189,18 @@ function within(x, y) {
     });
 }
 
+function getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+}
+
+
 function down(e) {
+
+  var pos = getMousePos(canvas, e)
     /*
     find the node target, 
     if there is a selection clear the selected state, 
@@ -197,7 +208,7 @@ function down(e) {
     mousedown when the selection changes to a new node and 
     we have something already selected we can create an edge
     */
-  let target = within(e.x , e.y );
+  let target = within(pos.x , pos.y );
   if (selection && selection.selected) {
       selection.selected = false;
   }
@@ -240,9 +251,11 @@ function move(e) {
 if there is a selection and the mouse is currently down 
 ➡️ update selection x and y
 */
+var pos = getMousePos(canvas, e);
+
   if (selection && e.buttons) {
-      selection.x = e.x;
-      selection.y = e.y;
+      selection.x = pos.x;
+      selection.y = pos.y;
       draw();
   }
 }
@@ -253,11 +266,14 @@ function up(e) {
     otherwise if the current selection is not selected (because of mouse down) 
     then clear the selection and draw after
     */
+
+  var pos = getMousePos(canvas, e);
+
   if (!selection) {
       let node = {
           id : nodes.length + 1,
-          x: e.x,
-          y: e.y,
+          x: pos.x,
+          y: pos.y,
           radius: radius,
           fillStyle: '#22cccc',
           strokeStyle: '#009999',
