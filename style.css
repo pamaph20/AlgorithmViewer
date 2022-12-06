@@ -3,7 +3,7 @@ h1{
 }
 
 canvas {
-
+    text-align: center;
     height: 700px;
     width: 1500px;
     border: 1px solid blue;
