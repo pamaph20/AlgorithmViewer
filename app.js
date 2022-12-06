@@ -310,6 +310,8 @@ function draw() {
         context.strokeStyle = node.strokeStyle;
         context.fill();
         var font = "bold "+ radius / 2 + "px serif";
+        context.textAlign='center';
+        context.textBaseline='middle';
         context.font = font;
         context.fillStyle = "black";
         context.fillText(node.id, node.x, node.y, node.radius);
