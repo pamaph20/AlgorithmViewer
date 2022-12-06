@@ -80,9 +80,9 @@ class Node {
     addVertex(vertex) {
       if (!this.adjacencyList[vertex]) this.adjacencyList[vertex] = [];
     }
-    addEdge(vertex1, vertex2, weight) {
-      this.adjacencyList[vertex1].push({ node: vertex2, weight });
-      this.adjacencyList[vertex2].push({ node: vertex1, weight });
+    addEdge(vertex1, vertex2, w) {
+      this.adjacencyList[vertex1].push({ node: vertex2, w });
+      this.adjacencyList[vertex2].push({ node: vertex1, w });
     }
     Dijkstra(start, finish) {
       const nodes = new PriorityQueue();
@@ -118,8 +118,12 @@ class Node {
             //find neighboring node
             let nextNode = this.adjacencyList[smallest][neighbor];
             //calculate new distance to neighboring node
-            let candidate = distances[smallest] + nextNode.weight;
+            let candidate = distances[smallest] + nextNode.w;
             let nextNeighbor = nextNode.node;
+            console.log(smallest);
+            console.log(candidate);
+            console.log(nextNeighbor);
+            console.log(distances[nextNeighbor]);
             if (candidate < distances[nextNeighbor]) {
               //updating new smallest distance to neighbor
               distances[nextNeighbor] = candidate;
@@ -139,8 +143,8 @@ const context = canvas.getContext('2d');
 var g = new WeightedGraph();
 var nodes = [];
 var edges = [];
-var weight = 0;
-var radius = 60;
+var radius = 55;
+var weight;
 var selection = undefined;
 window.onmousemove = move;
 window.onmousedown = down;
@@ -155,6 +159,15 @@ resize();
 function final(){
   let start = prompt("Please enter a start")
   let end = prompt("Please enter an end")
+  console.log(nodes)
+  while(isNaN(start)){
+    start = prompt("Enter a valid integer weight")
+  }
+  while(isNaN(end)){
+    end = prompt("Enter a valid integer weight");
+  }
+
+ 
 
   var map = g.Dijkstra(start, end);
   console.log(g.Dijkstra(start,end));
@@ -191,8 +204,11 @@ function down(e) {
   if (target) {
       if (selection && selection !== target) {
             if(!edgesExists(JSON.stringify(selection), JSON.stringify(target))){
-                let weight = prompt("Enter a weight");
-                console.log(weight)
+                weight = prompt("Enter a weight");
+                while(isNaN(Number(weight))){
+                  weight = prompt("Enter a valid integer weight");
+                }
+                weight = Number(weight);
                 edges.push({ from: selection, to: target, weight}); 
                 g.addEdge(selection.id, target.id, weight);            
                 
@@ -242,7 +258,7 @@ function up(e) {
           id : nodes.length + 1,
           x: e.x,
           y: e.y,
-          radius: 60,
+          radius: radius,
           fillStyle: '#22cccc',
           strokeStyle: '#009999',
           selectedFill: '#88aaaa',
@@ -266,11 +282,23 @@ function draw() {
         //connecting existing nodes
         let fromNode = edges[i].from;
         let toNode = edges[i].to;
+        console.log(fromNode.x, fromNode.y)
+        console.log(toNode.x, toNode.y)
         context.beginPath();
         context.strokeStyle = fromNode.strokeStyle;
         context.moveTo(fromNode.x, fromNode.y);
         context.lineTo(toNode.x, toNode.y);
+        context.lineWidth = 10;
+        context.strokeStyle = "lightGrey";
         context.stroke();
+        context.beginPath();
+        context.textAlign='center';
+        context.textBaseline='middle'
+        let midx = ((toNode.x + fromNode.x) / 2);
+        let midy = ((toNode.y + fromNode.y) / 2);
+        context.fillText(edges[i].weight, midx, midy);
+        context.stroke();
+  
     }
 
     for (let i = 0; i < nodes.length; i++) {
