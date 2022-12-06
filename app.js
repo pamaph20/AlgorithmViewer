@@ -138,6 +138,9 @@ class Node {
       return (path.concat(smallest).reverse());
     }
   }
+
+
+
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 var g = new WeightedGraph();
@@ -152,6 +155,8 @@ window.onmouseup = up;
 function resize() {
     canvas.width = 1500;
     canvas.height = 700;
+    canvas.border =  'solid black';
+
 }
 window.onresize = resize;
 resize();
@@ -175,7 +180,7 @@ function final(){
   var nodelist = map.split(",");
   console.log(nodelist);
   colorEdges(nodelist);
-  document.getElementById("Final Path").innerHTML = map.toString();
+  document.getElementById("Final Path").innerHTML = "Shortest Path from " + start + " to " + end + " is: " + map.toString();
   
 
 }
@@ -358,5 +363,7 @@ function clearPage(){
   edges = emptyedges;
   dict = newdict;  
   context.clearRect(0, 0, 1500, 700);
-  document.getElementById("test").innerHTML = "Not Run yet";
+  document.getElementById("Final Path").innerHTML = "Waiting to Run Shortest Path";
 }
+
+
