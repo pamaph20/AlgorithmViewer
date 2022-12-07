@@ -153,7 +153,7 @@ window.onmousemove = move;
 window.onmousedown = down;
 window.onmouseup = up;
 function resize() {
-    canvas.width = 1500;
+    canvas.width = 1550;
     canvas.height = 700;
     canvas.border =  'solid black';
 
