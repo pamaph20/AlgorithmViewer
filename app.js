@@ -142,6 +142,8 @@ class Node {
 
 
 const canvas = document.querySelector('canvas');
+var width = document.getElementById('canvas').clientWidth
+console.log(width)
 const context = canvas.getContext('2d');
 var g = new WeightedGraph();
 var nodes = [];
@@ -153,8 +155,8 @@ window.onmousemove = move;
 window.onmousedown = down;
 window.onmouseup = up;
 function resize() {
-    canvas.width = 1550;
-    canvas.height = 700;
+    canvas.width = document.getElementById('canvas').clientWidth
+    canvas.height = document.getElementById('canvas').clientHeight
     canvas.border =  'solid black';
 
 }
@@ -205,6 +207,7 @@ function getMousePos(canvas, evt) {
 
 function down(e) {
 
+  var checked = false
   var pos = getMousePos(canvas, e)
     /*
     find the node target, 
@@ -221,18 +224,31 @@ function down(e) {
       if (selection && selection !== target) {
             if(!edgesExists(JSON.stringify(selection), JSON.stringify(target))){
                 weight = prompt("Enter a weight");
-                while(isNaN(Number(weight))){
-                  weight = prompt("Enter a valid integer weight");
-                }
-                weight = Number(weight);
-                edges.push({ from: selection, to: target, weight}); 
-                g.addEdge(selection.id, target.id, weight);            
+                if (weight != null){
+                  
+
                 
+                  while(isNaN(Number(weight)) && weight != null){
+                    weight = prompt("Enter a valid integer weight");
+                  }
+                  if(weight != null){
+
+                    checked = true;
+                    weight = Number(weight);
+                    edges.push({ from: selection, to: target, weight}); 
+                    g.addEdge(selection.id, target.id, weight);
+                  }            
+                }
             }   
       }
+
+      
       selection = target;
       selection.selected = true;
+
       draw();
+      
+      
   }
 }
 
@@ -297,6 +313,7 @@ function up(e) {
 
 
 function draw() {
+  
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     for (let i = 0; i < edges.length; i++) {
@@ -338,7 +355,7 @@ function draw() {
         context.fillText(node.id, node.x, node.y, node.radius);
         context.stroke();
     }
-}
+  }
 
 
 // Colors the edges that are used in the shortest path

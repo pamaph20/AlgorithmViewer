@@ -4,8 +4,9 @@ h1{
 
 canvas {
     text-align: center;
-    height: 700px;
-    width: 1550px;
+    height: 60vh;
+    width: 97vw;
+    margin: 1.25vw;
     border: 1px solid blue;
 } 
 
